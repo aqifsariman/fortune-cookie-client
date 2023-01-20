@@ -22,19 +22,22 @@ public final class App {
             Console cons = System.console();
             String readInput = "";
             String response = "";
+            InputStream is = socket.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            DataInputStream dis = new DataInputStream(bis);
 
             while (!readInput.equalsIgnoreCase("close")) {
                 readInput = cons.readLine("Enter a command: ");
                 dos.writeUTF(readInput);
                 dos.flush();
-                InputStream is = socket.getInputStream();
-                BufferedInputStream bis = new BufferedInputStream(is);
-                DataInputStream dis = new DataInputStream(bis);
                 response = dis.readUTF();
                 System.out
                         .println(response.substring(0, 1).toUpperCase()
                                 + response.substring(1, response.length()) + " cookie received.");
             }
+            dis.close();
+            bis.close();
+            is.close();
         }
     }
 }
